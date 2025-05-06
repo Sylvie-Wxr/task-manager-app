@@ -19,6 +19,11 @@ export default function Index() {
   // List of tasks
   const [tasks, setTasks] = useState(initialTasks)
 
+  const handleDelete = (id: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
+
+
   return (
     <View
       style={styles.container}
@@ -47,8 +52,7 @@ export default function Index() {
               <View style={styles.actions}>
               {/* TODO: Navigate to edit-task screen */}
                 <IconButton icon="pencil" onPress={() => {}} />
-                  {/* TODO: Enable delete */}
-                <IconButton icon="delete" onPress={() => {}} />
+                <IconButton icon="delete" onPress={() => handleDelete(item.id)} />
               </View>
             </Card.Content>
           </Card>
