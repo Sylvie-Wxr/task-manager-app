@@ -19,8 +19,23 @@ export default function Index() {
   // List of tasks
   const [tasks, setTasks] = useState(initialTasks)
 
+  // Delete action
   const handleDelete = (id: string) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
+
+  // Toggle task status between "pending" and "completed"
+  const toggleStatus = (id: string) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              status: t.status === "completed" ? "pending" : "completed",
+            }
+          : t
+      )
+    );
   };
 
 
@@ -44,7 +59,7 @@ export default function Index() {
               <Checkbox
                 status={item.status === "completed" ? "checked" : "unchecked"}
                 // TODO: Enable check
-                onPress={() => {}}
+                onPress={() => toggleStatus(item.id)}
               />
               {/* Task title display */}
               <Text style={styles.title}>{item.title}</Text>
