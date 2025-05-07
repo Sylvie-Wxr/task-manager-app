@@ -11,8 +11,11 @@ export default function TaskDetailScreen() {
   const navigation = useNavigation();
 
 	const task = tasks.find((t) => t.id === id);
+	const [isEditing, setIsEditing] = useState(false);
+	const [title, setTitle] = useState(task?.title || "");
+  const [description, setDescription] = useState(task?.description || "");
 
-	// Dynamically set the screen title
+	// Set the screen title
   useLayoutEffect(() => {
     if (task) {
       navigation.setOptions({ title: task.title });
@@ -23,10 +26,37 @@ export default function TaskDetailScreen() {
     return <Text>Task not found</Text>;
   }
 
+	const handleSave = () => {
+    // TODO: Add updateTask logic in context
+    console.log("Save changes:", title, description);
+    setIsEditing(false);
+  };
+
 	return (
 		<View style={styles.container}>
-			<Text variant="titleLarge">{task.title}</Text>
-			<Text>{task.description}</Text>
+			{isEditing ? (
+        <>
+          <TextInput label="Title" value={title} onChangeText={setTitle} mode="outlined" style={styles.input} />
+          <TextInput label="Description" value={description} onChangeText={setDescription} mode="outlined" multiline style={styles.input} />
+					<Button mode="contained" onPress={handleSave}>Save</Button>
+          <Button onPress={() => setIsEditing(false)}>Cancel</Button>
+        </>
+      ) : (
+        <>
+			<Text variant="titleMedium" style={styles.label}>Title</Text>
+          <Text style={styles.text}>{task.title}</Text>
+
+          <Text variant="titleMedium" style={styles.label}>Description</Text>
+          <Text style={styles.text}>{task.description}</Text>
+
+          <Text variant="titleMedium" style={styles.label}>Status</Text>
+          <Text style={styles.text}>{task.status}</Text>
+
+          <Button icon="pencil" mode="outlined" onPress={() => setIsEditing(true)}>
+            Edit
+          </Button>
+			</>
+			)}
 		</View>
 	)
 }
@@ -39,5 +69,16 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 16,
+  },
+	header: {
+    marginBottom: 16,
+  },
+  label: {
+    marginTop: 12,
+    fontWeight: "bold",
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 8,
   },
 });
