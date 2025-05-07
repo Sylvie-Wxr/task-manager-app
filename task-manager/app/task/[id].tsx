@@ -6,7 +6,7 @@ import { useTaskContext } from "../../context/TaskContext";
 
 export default function TaskDetailScreen() {
 	const { id } = useLocalSearchParams(); // get dynamic id
-	const { tasks } = useTaskContext();
+	const { tasks, updateTask } = useTaskContext();
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -27,8 +27,7 @@ export default function TaskDetailScreen() {
   }
 
 	const handleSave = () => {
-    // TODO: Add updateTask logic in context
-    console.log("Save changes:", title, description);
+    updateTask(task.id, { title, description });
     setIsEditing(false);
   };
 
