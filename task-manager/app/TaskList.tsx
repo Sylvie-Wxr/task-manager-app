@@ -1,6 +1,5 @@
-import { Link } from "expo-router";
-import { useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Card, Checkbox, IconButton, Text } from "react-native-paper";
 import { useTaskContext } from "@/context/TaskContext";
 
@@ -20,6 +19,7 @@ import { useTaskContext } from "@/context/TaskContext";
 export default function TaskList() {
   // Access tasks and actions from context
   const { tasks, toggleTaskStatus, deleteTask } = useTaskContext();
+  const router = useRouter(); // initialize router
 
   return (
     <View
@@ -33,30 +33,34 @@ export default function TaskList() {
           <Button mode="contained">New</Button>
         </Link>
       </View>
-      
+
       {/* List of tasks */}
       <FlatList
         data={tasks}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false} // Hide default scroll bar
         renderItem={({ item }) => (
-          <Card style={styles.card} mode="elevated">
-            <Card.Content style={styles.cardContent}>
-              <Checkbox
-                status={item.status === "completed" ? "checked" : "unchecked"}
-                // Enable check
-                onPress={() => toggleTaskStatus(item.id)}
-              />
-              {/* Task title display */}
-              <Text style={styles.title}>{item.title}</Text>
-              {/* Edit and delete icons */}
-              <View style={styles.actions}>
-              {/* TODO: Navigate to edit-task screen */}
-                <IconButton icon="pencil" onPress={() => {}} />
-                <IconButton icon="delete" onPress={() => deleteTask(item.id)} />
-              </View>
-            </Card.Content>
-          </Card>
+          <TouchableOpacity
+            onPress={() => router.push(`/task/${item.id}`)} // navigate to detail/edit
+          >
+            <Card style={styles.card} mode="elevated">
+              <Card.Content style={styles.cardContent}>
+                <Checkbox
+                  status={item.status === "completed" ? "checked" : "unchecked"}
+                  // Enable check
+                  onPress={() => toggleTaskStatus(item.id)}
+                />
+                {/* Task title display */}
+                <Text style={styles.title}>{item.title}</Text>
+                {/* Edit and delete icons */}
+                <View style={styles.actions}>
+                  {/* TODO: Navigate to edit-task screen */}
+                  <IconButton icon="pencil" onPress={() => { }} />
+                  <IconButton icon="delete" onPress={() => deleteTask(item.id)} />
+                </View>
+              </Card.Content>
+            </Card>
+          </TouchableOpacity>
         )}
       />
     </View>
