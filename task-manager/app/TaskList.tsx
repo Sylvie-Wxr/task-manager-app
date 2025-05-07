@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, View } from "react-native";
 import { Button, Card, Checkbox, IconButton, Text } from "react-native-paper";
 import { useState } from "react";
 import { Task } from "../types/task";
+import { Link } from "expo-router";
 
 
 // Mock sample task data
@@ -47,7 +48,9 @@ export default function Index() {
       <View style={styles.header}>
         <Text variant="titleLarge">Task List</Text>
         {/* TODO: navigate to add task screen */}
-        <Button mode="contained" onPress={() => {}}>New</Button>
+        <Link href={"/add"} asChild>
+          <Button mode="contained">New</Button>
+        </Link>
       </View>
       
       <FlatList

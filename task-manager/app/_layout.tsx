@@ -7,6 +7,7 @@ export default function RootLayout() {
         name="index"
         options={{ title: "Task List" }}
       />
+      <Stack.Screen name="add" />
     </Stack>
   )
 }
