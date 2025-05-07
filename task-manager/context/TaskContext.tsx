@@ -7,6 +7,7 @@ type TaskContextType = {
     addTask: (task: Task) => void;
     toggleTaskStatus: (id: string) => void;
     deleteTask: (id: string) => void;
+    updateTask: (id: string, updates: Partial<Pick<Task, "title" | "description">>) => void;
   };
 
 // Create the context
@@ -30,8 +31,15 @@ const toggleTaskStatus = (id: string) =>
 const deleteTask = (id: string) =>
     setTasks((prev) => prev.filter((task) => task.id !== id));
 
+const updateTask = (id: string, updates: Partial<Pick<Task, "title" | "description">>) =>
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id ? { ...task, ...updates } : task
+      )
+    );
+
 return (
-    <TaskContext.Provider value={{ tasks, addTask, toggleTaskStatus, deleteTask }}>
+    <TaskContext.Provider value={{ tasks, addTask, toggleTaskStatus, deleteTask, updateTask }}>
     {children}
     </TaskContext.Provider>
 );
