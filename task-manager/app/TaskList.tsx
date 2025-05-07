@@ -37,8 +37,13 @@ export default function TaskList() {
                   // Enable check
                   onPress={() => toggleTaskStatus(item.id)}
                 />
-                {/* Task title display */}
-                <Text style={styles.title}>{item.title}</Text>
+                {/* Task title and description */}
+                <View style={styles.textContainer}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.description} numberOfLines={1}>
+                    {item.description}
+                  </Text>
+                </View>
                 {/* Edit and delete icons */}
                 <View style={styles.actions}>
                   <IconButton icon="delete" onPress={() => deleteTask(item.id)} />
@@ -74,9 +79,18 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Items (checkbox, title, actions) in a row
     alignItems: "center",
   },
+  textContainer: {
+    flex: 1,
+    flexDirection: "column",
+  },
   title: {
     flex: 1,
     fontSize: 16,
+  },
+  description: {
+    color: "#666",
+    fontSize: 14,
+    marginTop: 4,
   },
   actions: {
     flexDirection: "row", // Action icons next to each other
