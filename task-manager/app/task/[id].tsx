@@ -6,11 +6,14 @@ import { useTaskContext } from "../../context/TaskContext";
 
 export default function TaskDetailScreen() {
 	const { id } = useLocalSearchParams(); // get dynamic id
-	const { tasks, updateTask } = useTaskContext();
+	const { tasks, updateTask } = useTaskContext();  // Access tasks and updateTask from context
   const router = useRouter();
   const navigation = useNavigation();
 
+  // Find the task with the matching id
 	const task = tasks.find((t) => t.id === id);
+
+  // State for editing
 	const [isEditing, setIsEditing] = useState(false);
 	const [title, setTitle] = useState(task?.title || "");
   const [description, setDescription] = useState(task?.description || "");
@@ -22,10 +25,12 @@ export default function TaskDetailScreen() {
     }
   }, [task]);
 
+  // If task is not found, show a message
   if (!task) {
     return <Text>Task not found</Text>;
   }
 
+  // Handle save button
 	const handleSave = () => {
     updateTask(task.id, { title, description });
     setIsEditing(false);
@@ -34,6 +39,7 @@ export default function TaskDetailScreen() {
 	return (
 		<View style={styles.container}>
 			{isEditing ? (
+        // Edit mode
         <>
           <TextInput label="Title" value={title} onChangeText={setTitle} mode="outlined" style={styles.input} />
           <TextInput label="Description" value={description} onChangeText={setDescription} mode="outlined" multiline style={styles.input} />
@@ -41,6 +47,7 @@ export default function TaskDetailScreen() {
           <Button onPress={() => setIsEditing(false)}>Cancel</Button>
         </>
       ) : (
+        // View mode: show task details
         <>
 			<Text variant="titleMedium" style={styles.label}>Title</Text>
           <Text style={styles.text}>{task.title}</Text>
@@ -51,6 +58,7 @@ export default function TaskDetailScreen() {
           <Text variant="titleMedium" style={styles.label}>Status</Text>
           <Text style={styles.text}>{task.status}</Text>
 
+          {/* Edit button */}
           <Button icon="pencil" mode="outlined" onPress={() => setIsEditing(true)}>
             Edit
           </Button>
