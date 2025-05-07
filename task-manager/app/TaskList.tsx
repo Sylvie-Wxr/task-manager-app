@@ -1,17 +1,35 @@
 import { Link, useRouter } from "expo-router";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button, Card, Checkbox, IconButton, Text } from "react-native-paper";
+import { Button, Card, Checkbox, IconButton, Text, Searchbar } from "react-native-paper";
 import { useTaskContext } from "@/context/TaskContext";
+import { useState } from "react";
 
 export default function TaskList() {
   // Access tasks and actions from context
   const { tasks, toggleTaskStatus, deleteTask } = useTaskContext();
   const router = useRouter(); // initialize router
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter by title
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View
       style={styles.container}
     >
+      {/* Search bar */}
+      <Searchbar
+        placeholder="Search tasks by title..."
+        placeholderTextColor="#999" 
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        style={styles.searchBar}
+        inputStyle={styles.input}
+        iconColor="#999"
+      />
       {/* Header section*/}
       <View style={styles.header}>
         <Text variant="titleLarge">Task List</Text>
@@ -23,7 +41,7 @@ export default function TaskList() {
 
       {/* List of tasks */}
       <FlatList
-        data={tasks}
+        data={filteredTasks}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false} // Hide default scroll bar
         renderItem={({ item }) => (
@@ -94,5 +112,22 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: "row", // Action icons next to each other
+  },
+  searchBar: {
+    backgroundColor: "#f2f3f4", 
+    borderRadius: 24,
+    marginBottom: 35,
+    elevation: 0,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    paddingHorizontal: 8,
+    height: 40,
+    justifyContent: "center", 
+  },
+  input: {
+    fontSize: 15,
+    color: "#444",
+    paddingVertical: 0,
+    alignSelf: "center", 
   },
 });
