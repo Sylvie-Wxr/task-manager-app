@@ -1,8 +1,8 @@
+import { Link } from "expo-router";
+import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Button, Card, Checkbox, IconButton, Text } from "react-native-paper";
-import { useState } from "react";
 import { Task } from "../types/task";
-import { Link } from "expo-router";
 
 
 // Mock sample task data
