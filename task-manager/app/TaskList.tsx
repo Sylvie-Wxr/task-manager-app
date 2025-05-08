@@ -89,7 +89,7 @@ export default function TaskList() {
         <FAB
           icon="plus"
           size="large"
-          style={[styles.fab, { width: 72, height: 72 }]}
+          style={[styles.fab, { width: 65, height: 65 }]}
           onPress={() => router.push("/add")}
           color="white"
         />
