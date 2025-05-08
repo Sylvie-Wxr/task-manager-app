@@ -4,7 +4,16 @@ import { TaskProvider } from "../context/TaskContext";
 export default function RootLayout() {
   return (
     <TaskProvider>
-      <Stack>
+      <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#fff",
+        },
+        headerShadowVisible: false, // hides the bottom border line
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}>
         <Stack.Screen
           name="index"
           options={{ title: "Task List" }}
