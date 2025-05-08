@@ -33,7 +33,7 @@ export default function TaskList() {
         />
         {/* Header section*/}
         <View style={styles.header}>
-          <Text variant="titleLarge">Task List</Text>
+          <Text variant="titleLarge">My Task</Text>
           {/* Navigate to add task screen */}
           {/* <Link href={"/add"} asChild>
           <Button mode="contained">New</Button>
@@ -52,11 +52,20 @@ export default function TaskList() {
             >
               <Card style={styles.card} mode="elevated">
                 <Card.Content style={styles.cardContent}>
-                  <Checkbox
-                    status={item.status === "completed" ? "checked" : "unchecked"}
-                    // Enable check
+
+                  {/* Checkbox */}
+                  <TouchableOpacity
                     onPress={() => toggleTaskStatus(item.id)}
-                  />
+                    style={[
+                      styles.checkbox,
+                      item.status === "completed" && styles.checkboxCompleted,
+                    ]}
+                  >
+                    {item.status === "completed" && (
+                      <Text style={styles.checkmarkCompleted}>✓</Text>
+                    )}
+                  </TouchableOpacity>
+
                   {/* Task title and description */}
                   <View style={styles.textContainer}>
                     <Text style={styles.title}>{item.title}</Text>
@@ -100,12 +109,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 20,
   },
 
   card: {
-    marginBottom: 12,
+    marginBottom: 25,
     borderRadius: 12,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   cardContent: {
     flexDirection: "row", // Items (checkbox, title, actions) in a row
@@ -114,6 +129,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     flexDirection: "column",
+    marginLeft: 12,
   },
   title: {
     flex: 1,
@@ -155,6 +171,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
   },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderWidth: 1.5,
+    borderColor: "#555",
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
 
+  checkboxCompleted: {
+    backgroundColor: "#7d7cde",
+    borderColor: "#7d7cde",
+  },
+  
+  checkmarkCompleted: {
+    fontSize: 14,
+    color: "#ffffff",
+    fontWeight: "bold",
+    lineHeight: 16,
+  },
+  
 
 });
