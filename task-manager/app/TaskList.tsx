@@ -1,9 +1,10 @@
 import { useRouter } from "expo-router";
-import { FlatList, StyleSheet, TouchableOpacity, View, SafeAreaView } from "react-native";
-import { Card, Checkbox, IconButton, Text, Searchbar, FAB } from "react-native-paper";
+import { FlatList, StyleSheet, TouchableOpacity, View, SafeAreaView, Dimensions } from "react-native";
+import { Card, IconButton, Text, Searchbar, FAB } from "react-native-paper";
 import { useTaskContext } from "@/context/TaskContext";
 import { useState } from "react";
 
+const screenHeight = Dimensions.get("window").height;
 export default function TaskList() {
   // Access tasks and actions from context
   const { tasks, toggleTaskStatus, deleteTask } = useTaskContext();
@@ -18,10 +19,8 @@ export default function TaskList() {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <View
-        style={styles.container}
-      >
-        {/* Search bar */}
+      <View style={styles.container}>
+        {/* Search bar (always visible) */}
         <Searchbar
           placeholder="Search tasks by title..."
           placeholderTextColor="#999"
@@ -31,67 +30,73 @@ export default function TaskList() {
           inputStyle={styles.input}
           iconColor="#999"
         />
-        {/* Header section*/}
-        <View style={styles.header}>
-          <Text variant="titleLarge">My Task</Text>
-          {/* Navigate to add task screen */}
-          {/* <Link href={"/add"} asChild>
-          <Button mode="contained">New</Button>
-        </Link> */}
-        </View>
 
-        {/* List of tasks */}
-        <FlatList
-          data={filteredTasks}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingBottom: 96 }}
-          showsVerticalScrollIndicator={false} // Hide default scroll bar
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => router.push(`/task/${item.id}`)} // navigate to detail/edit
-            >
-              <Card style={styles.card} mode="elevated">
-                <Card.Content style={styles.cardContent}>
+        {/* No task, suggesting creating one */}
+        {filteredTasks.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <IconButton
+              icon="clipboard-plus-outline"
+              size={64}
+              iconColor="#ccc"
+              style={styles.emptyIcon}
+            />
+            <Text style={styles.emptyText}>
+              You have no tasks right now. Tap the + to create one!
+            </Text>
+          </View>
+        ) : (
+          <>
 
-                  {/* Checkbox */}
-                  <TouchableOpacity
-                    onPress={() => toggleTaskStatus(item.id)}
-                    style={[
-                      styles.checkbox,
-                      item.status === "completed" && styles.checkboxCompleted,
-                    ]}
-                  >
-                    {item.status === "completed" && (
-                      <Text style={styles.checkmarkCompleted}>✓</Text>
-                    )}
-                  </TouchableOpacity>
+            <FlatList
+              data={filteredTasks}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={{ paddingBottom: 96 }}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => router.push(`/task/${item.id}`)}>
+                  <Card style={styles.card} mode="elevated">
+                    <Card.Content style={styles.cardContent}>
+                      <TouchableOpacity
+                        onPress={() => toggleTaskStatus(item.id)}
+                        style={[
+                          styles.checkbox,
+                          item.status === "completed" && styles.checkboxCompleted,
+                        ]}
+                      >
+                        {item.status === "completed" && (
+                          <Text style={styles.checkmarkCompleted}>✓</Text>
+                        )}
+                      </TouchableOpacity>
 
-                  {/* Task title and description */}
-                  <View style={styles.textContainer}>
-                    <Text style={styles.title}>{item.title}</Text>
-                    <Text style={styles.description} numberOfLines={1}>
-                      {item.description}
-                    </Text>
-                  </View>
-                  {/* Edit and delete icons */}
-                  <View style={styles.actions}>
-                    <IconButton icon="delete" onPress={() => deleteTask(item.id)} />
-                  </View>
-                </Card.Content>
-              </Card>
-            </TouchableOpacity>
-          )}
-        />
+                      <View style={styles.textContainer}>
+                        <Text style={styles.title}>{item.title}</Text>
+                        <Text style={styles.description} numberOfLines={1}>
+                          {item.description}
+                        </Text>
+                      </View>
+                      <View style={styles.actions}>
+                        <IconButton icon="delete" onPress={() => deleteTask(item.id)} />
+                      </View>
+                    </Card.Content>
+                  </Card>
+                </TouchableOpacity>
+              )}
+            />
+          </>
+        )}
+
+        {/* Floating Add Button */}
         <FAB
           icon="plus"
-          style={styles.fab}
+          size="large"
+          style={[styles.fab, { width: 72, height: 72 }]}
           onPress={() => router.push("/add")}
           color="white"
         />
-
       </View>
     </SafeAreaView>
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -99,19 +104,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
   },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingTop: screenHeight * 0.2,
+  },
+  emptyIcon: {
+    marginBottom: 12,
+  },
+
+  emptyText: {
+    fontSize: 16,
+    color: "#999",
+    textAlign: "center",
+    paddingHorizontal: 20,
+  },
   container: {
     padding: 16,
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
-
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-
   card: {
     marginBottom: 25,
     borderRadius: 12,
@@ -170,6 +183,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
+    borderRadius: 36, // Make it a circle
+    justifyContent: 'center',
+  alignItems: 'center',
   },
   checkbox: {
     width: 22,
@@ -186,13 +202,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#7d7cde",
     borderColor: "#7d7cde",
   },
-  
+
   checkmarkCompleted: {
     fontSize: 14,
     color: "#ffffff",
     fontWeight: "bold",
     lineHeight: 16,
   },
-  
-
 });
