@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
 import { TaskProvider } from "../context/TaskContext";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 export default function RootLayout() {
   return (
     <TaskProvider>
+      <SafeAreaView style={styles.safeArea}>
       <Stack
       screenOptions={{
         headerStyle: {
@@ -20,7 +22,15 @@ export default function RootLayout() {
         />
         <Stack.Screen
           name="add"
-          options={{ title: "Add New Task" }} />
+          options={{ headerShown: false  }} />
       </Stack>
+      </SafeAreaView>
     </TaskProvider>)
 }
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+});

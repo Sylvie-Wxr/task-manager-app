@@ -18,7 +18,7 @@ export default function TaskList() {
   );
 
   return (
-    <SafeAreaView style={styles.safe}>
+   
       <View style={styles.container}>
         {/* Search bar (always visible) */}
         <Searchbar
@@ -94,16 +94,11 @@ export default function TaskList() {
           color="white"
         />
       </View>
-    </SafeAreaView>
   );
 
 }
 
 const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-  },
   emptyContainer: {
     flex: 1,
     justifyContent: "flex-start",
