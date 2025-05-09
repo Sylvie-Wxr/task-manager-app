@@ -82,7 +82,8 @@ export default function TaskForm({
       </Button>
 
       {onCancel && (
-        <Button onPress={onCancel} style={{ marginTop: 8 }}>
+        <Button onPress={onCancel} 
+        style={{ marginTop: 8 }}>
           Cancel
         </Button>
       )}
@@ -136,6 +137,6 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 24,
-    paddingVertical: 6,
+    // paddingVertical: 6,
   },
 });

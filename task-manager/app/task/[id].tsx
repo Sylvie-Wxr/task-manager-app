@@ -7,7 +7,7 @@ import TaskForm from "../../components/TaskForm";
 
 export default function TaskDetailScreen() {
 	const { id } = useLocalSearchParams(); // get dynamic id
-	const { tasks, updateTask } = useTaskContext();  // Access tasks and updateTask from context
+	const { tasks, updateTask, deleteTask } = useTaskContext();  // Access tasks and updateTask from context
   const router = useRouter();
   const navigation = useNavigation();
 
@@ -40,7 +40,7 @@ export default function TaskDetailScreen() {
 
 	return (
 		<View style={styles.container}>
-			
+			{/* When editing, go to edit mode; if not, view mode */}
 			{isEditing ? (
         // Edit mode
         <TaskForm
@@ -73,13 +73,32 @@ export default function TaskDetailScreen() {
 			
 			 {/* Edit button */}
 			 {!isEditing && (
+				<>
     <Button
       icon="pencil"
-      mode="outlined"
+      mode="contained"
       onPress={() => setIsEditing(true)}
+			buttonColor="#8c7cde"
+  textColor="#fff"
     >
       Edit
     </Button>
+		<Button
+  icon="delete"
+  mode="outlined"
+  onPress={() => {
+    deleteTask(task.id);
+    router.back();
+  }}
+ 
+	style={{ marginTop: 16 }}
+>
+  Delete
+</Button>
+
+	
+	</>
+		
   )}
 		</View>
 	)
@@ -112,4 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
   },
+
+	
 });
