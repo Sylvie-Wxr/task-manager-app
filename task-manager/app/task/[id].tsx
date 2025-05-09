@@ -3,6 +3,7 @@ import { Text, TextInput, Button } from "react-native-paper";
 import { useLocalSearchParams, useRouter, useNavigation } from "expo-router";
 import { useLayoutEffect, useState } from "react";
 import { useTaskContext } from "../../context/TaskContext";
+import TaskForm from "../../components/TaskForm";
 
 export default function TaskDetailScreen() {
 	const { id } = useLocalSearchParams(); // get dynamic id
@@ -17,6 +18,7 @@ export default function TaskDetailScreen() {
 	const [isEditing, setIsEditing] = useState(false);
 	const [title, setTitle] = useState(task?.title || "");
   const [description, setDescription] = useState(task?.description || "");
+	const [status, setStatus] = useState<"pending" | "completed">(task?.status || "pending");
 
 	// Set the screen title
   useLayoutEffect(() => {
@@ -38,18 +40,24 @@ export default function TaskDetailScreen() {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.detailCard}>
+			
 			{isEditing ? (
         // Edit mode
-        <>
-          <TextInput label="Title" value={title} onChangeText={setTitle} mode="outlined" style={styles.input} />
-          <TextInput label="Description" value={description} onChangeText={setDescription} mode="outlined" multiline style={styles.input} />
-					<Button mode="contained" onPress={handleSave}>Save</Button>
-          <Button onPress={() => setIsEditing(false)}>Cancel</Button>
-        </>
+        <TaskForm
+          title={title}
+          description={description}
+          status={status}
+          onChangeTitle={setTitle}
+          onChangeDescription={setDescription}
+          onChangeStatus={setStatus}
+          onSubmit={handleSave}
+          onCancel={() => setIsEditing(false)}
+          submitLabel="Save"
+        />
       ) : (
         // View mode: show task details
         <>
+				<View style={styles.detailCard}>
 			<Text variant="titleMedium" style={styles.label}>Title</Text>
           <Text style={styles.text}>{task.title}</Text>
 
@@ -59,10 +67,10 @@ export default function TaskDetailScreen() {
           <Text variant="titleMedium" style={styles.label}>Status</Text>
           <Text style={styles.text}>{task.status}</Text>
 
-         
+					</View>   
 			</>
 			)}
-			</View>
+			
 			 {/* Edit button */}
 			 {!isEditing && (
     <Button
