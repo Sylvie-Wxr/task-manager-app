@@ -25,7 +25,6 @@ export default function AddTaskScreen() {
 
 		// Add the task using context method
 		addTask(newTask);
-		// console.log("Saving task with status:", status);
 		router.back(); // Navigate back to the task list screen
 	};
 
