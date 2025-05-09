@@ -34,7 +34,7 @@ export default function TaskDetailScreen() {
 
   // Handle save button
 	const handleSave = () => {
-    updateTask(task.id, { title, description });
+    updateTask(task.id, { title, description, status });
     setIsEditing(false);
   };
 

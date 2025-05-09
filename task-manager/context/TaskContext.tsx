@@ -7,7 +7,7 @@ type TaskContextType = {
     addTask: (task: Task) => void;
     toggleTaskStatus: (id: string) => void;
     deleteTask: (id: string) => void;
-    updateTask: (id: string, updates: Partial<Pick<Task, "title" | "description">>) => void;
+    updateTask: (id: string, updates: Pick<Task, "title" | "description" | "status">) => void;
   };
 
 // Create the context
@@ -31,7 +31,7 @@ const toggleTaskStatus = (id: string) =>
 const deleteTask = (id: string) =>
     setTasks((prev) => prev.filter((task) => task.id !== id));
 
-const updateTask = (id: string, updates: Partial<Pick<Task, "title" | "description">>) =>
+const updateTask = (id: string, updates: Pick<Task, "title" | "description" | "status">) =>
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id ? { ...task, ...updates } : task
