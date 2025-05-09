@@ -4,7 +4,9 @@ import { Card, IconButton, Text, Searchbar, FAB } from "react-native-paper";
 import { useTaskContext } from "@/context/TaskContext";
 import { useState } from "react";
 
+// Get screen height for calculating dynamic padding
 const screenHeight = Dimensions.get("window").height;
+
 export default function TaskList() {
   // Access tasks and actions from context
   const { tasks, toggleTaskStatus, deleteTask } = useTaskContext();
@@ -18,7 +20,6 @@ export default function TaskList() {
   );
 
   return (
-
     <View style={styles.container}>
       {/* Search bar (always visible) */}
       <Searchbar
@@ -47,6 +48,7 @@ export default function TaskList() {
       ) : (
         <>
 
+          {/* List of filtered task cards */}
           <FlatList
             data={filteredTasks}
             keyExtractor={(item) => item.id}
@@ -56,12 +58,13 @@ export default function TaskList() {
               <TouchableOpacity onPress={() => router.push(`/task/${item.id}`)}>
                 <Card style={styles.card} mode="elevated">
                   <Card.Title
-                    title={item.title}
-                    subtitle={item.description}
+                    title={item.title} // Task title
+                    subtitle={item.description} // Task description (1 line)
                     titleStyle={styles.title}
                     subtitleStyle={styles.description}
                     style={{ paddingVertical: 12 }}
                     left={() => (
+                      // Checkbox on the left
                       <TouchableOpacity
                         onPress={() => toggleTaskStatus(item.id)}
                         style={[
@@ -69,11 +72,13 @@ export default function TaskList() {
                           item.status === "completed" && styles.checkboxCompleted,
                         ]}
                       >
+                         {/* Show checkmark if task is completed */}
                         {item.status === "completed" && (
                           <Text style={styles.checkmarkCompleted}>✓</Text>
                         )}
                       </TouchableOpacity>
                     )}
+                    // Delete icon on the right
                     right={() => (
                       <IconButton
                         icon="delete"
@@ -95,7 +100,7 @@ export default function TaskList() {
         icon="plus"
         size="large"
         style={[styles.fab, { width: 65, height: 65 }]}
-        onPress={() => router.push("/add")}
+        onPress={() => router.push("/add")} // Navigate to add task screen
         color="white"
       />
     </View>

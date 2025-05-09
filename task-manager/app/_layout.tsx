@@ -22,7 +22,7 @@ export default function RootLayout() {
         />
         <Stack.Screen
           name="add"
-          options={{ headerShown: false  }} />
+          options={{ title: "New Task"  }} />
       </Stack>
       </SafeAreaView>
     </TaskProvider>)

@@ -35,7 +35,6 @@ export default function AddTaskScreen() {
 			style={{ flex: 1 }}
 		>
 			<TaskForm
-        header="New Task"
         title={title}
         description={description}
         status={status}

@@ -1,8 +1,8 @@
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Text, TextInput, Button, RadioButton } from "react-native-paper";
 
+// Props passed into TaskForm for both Add and Edit screens
 type Props = {
-  header?: string;
   title: string;
   description: string;
   status: "pending" | "completed";
@@ -10,12 +10,11 @@ type Props = {
   onChangeDescription: (text: string) => void;
   onChangeStatus: (status: "pending" | "completed") => void;
   onSubmit: () => void;
-  onCancel?: () => void;
+  onCancel: () => void;
   submitLabel?: string;
 };
 
 export default function TaskForm({
-  header,
   title,
   description,
   status,
@@ -28,11 +27,7 @@ export default function TaskForm({
 }: Props) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {header && (
-  <View style={styles.headerContainer}>
-    <Text style={styles.headerText}>{header}</Text>
-  </View>
-)}
+    	{/* Title Input */}
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Title</Text>
         <TextInput
@@ -44,6 +39,7 @@ export default function TaskForm({
         />
       </View>
 
+			{/* Description Input */}
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Description</Text>
         <TextInput
@@ -57,6 +53,7 @@ export default function TaskForm({
         />
       </View>
 
+			{/* Status Group */}
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Status</Text>
         <RadioButton.Group onValueChange={value => onChangeStatus(value as "pending" | "completed")} value={status}>
@@ -71,16 +68,18 @@ export default function TaskForm({
         </RadioButton.Group>
       </View>
 
+			{/* Submit Button */}
       <Button
         mode="contained"
         onPress={onSubmit}
         buttonColor="#8c7cde"
-        disabled={title.trim() === ""}
+        disabled={title.trim() === ""} // disabled when title is empty
         style={styles.submitButton}
       >
         {submitLabel}
       </Button>
 
+			{/* Cancel Button */}
       {onCancel && (
         <Button onPress={onCancel} 
         style={{ marginTop: 8 }}>
@@ -96,23 +95,6 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     backgroundColor: "#fff",
-  },
-  headerContainer: {
-    backgroundColor: "#f6f2f9",
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-    marginBottom: 40,
-    borderRadius: 16,
-  },
-  headerText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    flex: 1,
   },
   inputGroup: {
     marginBottom: 25,
@@ -137,6 +119,5 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 24,
-    // paddingVertical: 6,
   },
 });

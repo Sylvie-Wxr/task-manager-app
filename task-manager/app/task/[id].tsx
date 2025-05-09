@@ -11,8 +11,7 @@ export default function TaskDetailScreen() {
 	const router = useRouter();
 	const navigation = useNavigation();
 
-	// Find the task with the matching id
-	const task = tasks.find((t) => t.id === id);
+	const task = tasks.find((t) => t.id === id); // Find the task with the matching id
 
 	// State for editing
 	const [isEditing, setIsEditing] = useState(false);
@@ -45,7 +44,7 @@ export default function TaskDetailScreen() {
 		<View style={styles.container}>
 			{/* When editing, go to edit mode; if not, view mode */}
 			{isEditing ? (
-				// Edit mode
+				// Edit mode, use the TaskForm component
 				<TaskForm
 					title={title}
 					description={description}
@@ -60,6 +59,7 @@ export default function TaskDetailScreen() {
 			) : (
 				// View mode: show task details
 				<>
+					{/* Task Detail Card */}
 					<View style={styles.detailCard}>
 						<View style={styles.headerRow}>
 							<Avatar.Icon
@@ -71,16 +71,19 @@ export default function TaskDetailScreen() {
 							<Text style={styles.cardTitle}>{task.title}</Text>
 						</View>
 
+						{/* Title Section */}
 						<View style={styles.section}>
 							<Text style={styles.label}>TITLE</Text>
 							<Text style={styles.value}>{task.title}</Text>
 						</View>
 
+						{/* Description Section */}
 						<View style={styles.section}>
 							<Text style={styles.label}>DESCRIPTION</Text>
 							<Text style={styles.value}>{task.description}</Text>
 						</View>
 
+						{/* Status Section */}
 						<View style={styles.section}>
 							<Text style={styles.label}>STATUS</Text>
 							<Text style={styles.value}>
@@ -92,7 +95,7 @@ export default function TaskDetailScreen() {
 				</>
 			)}
 
-			{/* Edit button */}
+			{/* Edit & Delete (only in view mode) */}
 			{!isEditing && (
 				<>
 					<Button
@@ -130,12 +133,10 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 	},
 	detailCard: {
-		backgroundColor: "#ffffff", // white background
+		backgroundColor: "#ffffff",
 		borderRadius: 16,
 		padding: 20,
 		marginBottom: 32,
-
-		// Subtle border and shadow
 		borderWidth: 1,
 		borderColor: "#e4e4ed",
 		shadowColor: "#000",
@@ -170,7 +171,4 @@ const styles = StyleSheet.create({
 		backgroundColor: "#8c7cde",
 		marginRight: 12,
 	},
-
-
-
 });
