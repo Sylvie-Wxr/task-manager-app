@@ -43,6 +43,8 @@ export default function AddTaskScreen() {
         onChangeDescription={setDescription}
         onChangeStatus={setStatus}
         onSubmit={handleSave}
+				onCancel={() => router.back()}
+  			submitLabel="Save"
       />
 		</KeyboardAvoidingView>
 	);
