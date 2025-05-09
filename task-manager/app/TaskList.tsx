@@ -18,44 +18,50 @@ export default function TaskList() {
   );
 
   return (
-   
-      <View style={styles.container}>
-        {/* Search bar (always visible) */}
-        <Searchbar
-          placeholder="Search tasks by title..."
-          placeholderTextColor="#999"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          style={styles.searchBar}
-          inputStyle={styles.input}
-          iconColor="#999"
-        />
 
-        {/* No task, suggesting creating one */}
-        {filteredTasks.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <IconButton
-              icon="clipboard-plus-outline"
-              size={64}
-              iconColor="#ccc"
-              style={styles.emptyIcon}
-            />
-            <Text style={styles.emptyText}>
-              You have no tasks right now. Tap the + to create one!
-            </Text>
-          </View>
-        ) : (
-          <>
+    <View style={styles.container}>
+      {/* Search bar (always visible) */}
+      <Searchbar
+        placeholder="Search tasks by title..."
+        placeholderTextColor="#999"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        style={styles.searchBar}
+        inputStyle={styles.input}
+        iconColor="#999"
+      />
 
-            <FlatList
-              data={filteredTasks}
-              keyExtractor={(item) => item.id}
-              contentContainerStyle={{ paddingBottom: 96 }}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => router.push(`/task/${item.id}`)}>
-                  <Card style={styles.card} mode="elevated">
-                    <Card.Content style={styles.cardContent}>
+      {/* No task, suggesting creating one */}
+      {filteredTasks.length === 0 ? (
+        <View style={styles.emptyContainer}>
+          <IconButton
+            icon="clipboard-plus-outline"
+            size={64}
+            iconColor="#ccc"
+            style={styles.emptyIcon}
+          />
+          <Text style={styles.emptyText}>
+            You have no tasks right now. Tap the + to create one!
+          </Text>
+        </View>
+      ) : (
+        <>
+
+          <FlatList
+            data={filteredTasks}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingBottom: 96 }}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => router.push(`/task/${item.id}`)}>
+                <Card style={styles.card} mode="elevated">
+                  <Card.Title
+                    title={item.title}
+                    subtitle={item.description}
+                    titleStyle={styles.title}
+                    subtitleStyle={styles.description}
+                    style={{ paddingVertical: 12 }}
+                    left={() => (
                       <TouchableOpacity
                         onPress={() => toggleTaskStatus(item.id)}
                         style={[
@@ -67,33 +73,32 @@ export default function TaskList() {
                           <Text style={styles.checkmarkCompleted}>✓</Text>
                         )}
                       </TouchableOpacity>
+                    )}
+                    right={() => (
+                      <IconButton
+                        icon="delete"
+                        onPress={() => deleteTask(item.id)}
+                        style={{ marginRight: 4 }}
+                      />
+                    )}
+                  />
+                </Card>
 
-                      <View style={styles.textContainer}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text style={styles.description} numberOfLines={1}>
-                          {item.description}
-                        </Text>
-                      </View>
-                      <View style={styles.actions}>
-                        <IconButton icon="delete" onPress={() => deleteTask(item.id)} />
-                      </View>
-                    </Card.Content>
-                  </Card>
-                </TouchableOpacity>
-              )}
-            />
-          </>
-        )}
+              </TouchableOpacity>
+            )}
+          />
+        </>
+      )}
 
-        {/* Floating Add Button */}
-        <FAB
-          icon="plus"
-          size="large"
-          style={[styles.fab, { width: 65, height: 65 }]}
-          onPress={() => router.push("/add")}
-          color="white"
-        />
-      </View>
+      {/* Floating Add Button */}
+      <FAB
+        icon="plus"
+        size="large"
+        style={[styles.fab, { width: 65, height: 65 }]}
+        onPress={() => router.push("/add")}
+        color="white"
+      />
+    </View>
   );
 
 }
@@ -130,26 +135,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
-  cardContent: {
-    flexDirection: "row", // Items (checkbox, title, actions) in a row
-    alignItems: "center",
-  },
-  textContainer: {
-    flex: 1,
-    flexDirection: "column",
-    marginLeft: 12,
-  },
   title: {
-    flex: 1,
-    fontSize: 16,
+    fontSize: 19,
   },
+
   description: {
     color: "#666",
     fontSize: 14,
-    marginTop: 4,
-  },
-  actions: {
-    flexDirection: "row", // Action icons next to each other
   },
   searchBar: {
     backgroundColor: "#f2f3f4",
@@ -180,7 +172,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     borderRadius: 36, // Make it a circle
     justifyContent: 'center',
-  alignItems: 'center',
+    alignItems: 'center',
   },
   checkbox: {
     width: 22,
