@@ -55,7 +55,9 @@ export default function TaskList() {
             contentContainerStyle={{ paddingBottom: 96 }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
+              // Click the task card to show task detail
               <TouchableOpacity onPress={() => router.push(`/task/${item.id}`)}>
+
                 <Card style={styles.card} mode="elevated">
                   <Card.Title
                     title={item.title} // Task title
@@ -64,7 +66,7 @@ export default function TaskList() {
                     subtitleStyle={styles.description}
                     style={{ paddingVertical: 12 }}
                     left={() => (
-                      // Checkbox on the left
+                      // Checkbox on the left, toggle pending or completed
                       <TouchableOpacity
                         onPress={() => toggleTaskStatus(item.id)}
                         style={[
