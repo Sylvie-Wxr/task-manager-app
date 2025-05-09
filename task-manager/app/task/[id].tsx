@@ -19,12 +19,12 @@ export default function TaskDetailScreen() {
 	const [description, setDescription] = useState(task?.description || "");
 	const [status, setStatus] = useState<"pending" | "completed">(task?.status || "pending");
 
-	// Screen title as Task Details when not editing
-	// When edding, screen title is the task title
+	// Screen title as "Task Details" when not editing
+	// When edding, screen title is "Edit Task"
 	useLayoutEffect(() => {
 		if (task) {
 			navigation.setOptions({
-				title: isEditing ? task.title : "Task Details",
+				title: isEditing ? "Edit Task" : "Task Details",
 			});
 		}
 	}, [isEditing, task]);
