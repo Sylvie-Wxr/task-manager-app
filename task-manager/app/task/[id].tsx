@@ -38,6 +38,7 @@ export default function TaskDetailScreen() {
 
 	return (
 		<View style={styles.container}>
+			<View style={styles.detailCard}>
 			{isEditing ? (
         // Edit mode
         <>
@@ -58,12 +59,20 @@ export default function TaskDetailScreen() {
           <Text variant="titleMedium" style={styles.label}>Status</Text>
           <Text style={styles.text}>{task.status}</Text>
 
-          {/* Edit button */}
-          <Button icon="pencil" mode="outlined" onPress={() => setIsEditing(true)}>
-            Edit
-          </Button>
+         
 			</>
 			)}
+			</View>
+			 {/* Edit button */}
+			 {!isEditing && (
+    <Button
+      icon="pencil"
+      mode="outlined"
+      onPress={() => setIsEditing(true)}
+    >
+      Edit
+    </Button>
+  )}
 		</View>
 	)
 }
@@ -74,8 +83,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+	detailCard: {
+		backgroundColor: "#f7f6fa",
+		borderRadius: 12,
+		padding: 20,
+		marginBottom: 50,
+		elevation: 2, // subtle shadow
+	},
   input: {
-    marginBottom: 16,
+    marginBottom: 24,
   },
 	header: {
     marginBottom: 16,
